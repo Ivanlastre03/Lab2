@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ artista.nombre }} | Lab2 en Django{% endblock %}
+
+{% block content %}
+  <section class="detalle-hero">
+    <div class="detalle-grid">
+      <div class="detalle-foto">
+        <img src="{% static artista.imagen %}" alt="{{ artista.nombre }}">
+      </div>
+
+      <article class="detalle-info">
+        {% if artista.destacado %}
+          <span class="badge">Artista destacado</span>
+        {% else %}
+          <span class="badge badge-secondary">Leyenda vallenata</span>
+        {% endif %}
+
+        <h1>{{ artista.nombre }}</h1>
+        <h2>{{ artista.apodo }}</h2>
+        <p>{{ artista.descripcion }}</p>
+
+        <div class="estadisticas detalle-stats">
+          <div><h2>{{ artista.anio_inicio }}</h2><span>Año de inicio</span></div>
+          <div><h2>{{ artista.reproducciones }}M+</h2><span>Reproducciones</span></div>
+          <div><h2>{{ artista.canciones|length }}</h2><span>Canciones</span></div>
+        </div>
+
+        <p><strong>Origen:</strong> {{ artista.origen }}</p>
+        <a class="btn btn-small" href="{% url 'index' %}#artistas">Volver al listado</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="playlist">
+    <h2>Canciones Representativas</h2>
+
+    <div class="playlist-grid">
+      {% for cancion in artista.canciones %}
+        <article class="song">
+          <i class="fa-solid fa-record-vinyl"></i>
+          <h3>{{ cancion.titulo }}</h3>
+          <span>Año {{ cancion.anio }}</span>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

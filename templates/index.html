@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lab2 en Django{% endblock %}
+
+{% block content %}
+  <section class="hero" id="inicio">
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+      <h3>EL LEGADO DEL FOLCLOR</h3>
+      <h1>LAB2<br>EN DJANGO</h1>
+
+      <p>
+        Proyecto academico con plantillas, datos dinamicos, rutas de detalle y estilos responsivos.
+      </p>
+
+      <a href="#artistas" class="btn">Explorar Artistas</a>
+
+      <div class="autor">
+        Creado por <strong>Ivan Lastre</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="sobre" id="historia">
+    <div class="contenedor">
+      <h2>
+        <i class="fa-solid fa-guitar"></i>
+        Lab2 en Django
+      </h2>
+
+      <p>
+        Esta pagina usa Django para renderizar informacion desde una coleccion de datos,
+        compartir un layout base y navegar hacia paginas dinamicas de detalle.
+      </p>
+
+      <p>Los instrumentos tradicionales son:</p>
+
+      <div class="instrumentos">
+        <article class="card">
+          <i class="fa-solid fa-compact-disc"></i>
+          <h3>Acordeon</h3>
+          <p>Instrumento principal del vallenato.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-drum"></i>
+          <h3>Caja</h3>
+          <p>Marca el ritmo de cada cancion.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-star"></i>
+          <h3>Guacharaca</h3>
+          <p>Aporta el sonido caracteristico del folclor.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="top2026" id="top">
+    <h2>Datos del Proyecto</h2>
+
+    <div class="top-card">
+      <div class="numero">{{ artistas|length }}</div>
+
+      <div class="info">
+        <h3>Coleccion de artistas</h3>
+        <h4>Datos enviados desde Django</h4>
+
+        <p>
+          La pagina usa una coleccion de objetos con datos anidados, campos numericos,
+          imagenes, rutas dinamicas y condiciones dentro de la plantilla.
+        </p>
+
+        <div class="estadisticas">
+          <div><h2>{{ artistas|length }}</h2><span>Artistas</span></div>
+          <div><h2>12</h2><span>Canciones</span></div>
+          <div><h2>4</h2><span>Rutas detalle</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="playlist" id="playlist">
+    <h2>Playlist Recomendada</h2>
+    <p>Las canciones mas representativas del vallenato.</p>
+
+    <div class="playlist-grid">
+      {% for artista in artistas %}
+        {% for cancion in artista.canciones|slice:":1" %}
+          <article class="song">
+            <i class="fa-solid fa-play"></i>
+            <h3>{{ cancion.titulo }}</h3>
+            <span>{{ artista.nombre }} - {{ cancion.anio }}</span>
+          </article>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="artistas" id="artistas">
+    <h2>Coleccion del Lab2 en Django</h2>
+
+    <div class="artistas-grid">
+      {% for artista in artistas %}
+        <article class="artista-card">
+          {% if artista.destacado %}
+            <span class="badge">Destacado</span>
+          {% endif %}
+
+          <div class="foto">
+            <img src="{% static artista.imagen %}" alt="{{ artista.nombre }}">
+          </div>
+
+          <h3>{{ artista.nombre }}</h3>
+          <p>{{ artista.descripcion }}</p>
+
+          <ul class="datos-artista">
+            <li><strong>Origen:</strong> {{ artista.origen }}</li>
+            <li><strong>Inicio:</strong> {{ artista.anio_inicio }}</li>
+            <li><strong>Reproducciones:</strong> {{ artista.reproducciones }}M+</li>
+          </ul>
+
+          <a class="btn btn-small" href="{% url 'detalle_artista' artista.slug %}">
+            Ver detalle
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="estadisticas-section">
+    <div class="contador">
+      <h2 class="counter" data-target="100">0</h2>
+      <span>Canciones Clasicas</span>
+    </div>
+
+    <div class="contador">
+      <h2 class="counter" data-target="60">0</h2>
+      <span>Anios de Historia</span>
+    </div>
+
+    <div class="contador">
+      <h2 class="counter" data-target="500">0</h2>
+      <span>Millones de Oyentes</span>
+    </div>
+
+    <div class="contador">
+      <h2 class="counter" data-target="20">0</h2>
+      <span>Artistas Legendarios</span>
+    </div>
+  </section>
+
+  <section class="frase">
+    <div class="frase-contenido">
+      <i class="fa-solid fa-quote-left"></i>
+      <p>"El vallenato no solamente se canta, se siente con el corazon."</p>
+      <h3>- Inspirado en el legado de sus grandes artistas</h3>
+    </div>
+  </section>
+{% endblock %}

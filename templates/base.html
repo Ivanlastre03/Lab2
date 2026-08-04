@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Lab2 en Django{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+  <header id="header">
+    <nav class="navbar" aria-label="Navegacion principal">
+      <a class="logo" href="{% url 'index' %}#inicio">
+        <i class="fa-solid fa-music"></i>
+        <span>Lab2 en Django</span>
+      </a>
+
+      <ul>
+        <li><a href="{% url 'index' %}#inicio">Inicio</a></li>
+        <li><a href="{% url 'index' %}#historia">Historia</a></li>
+        <li><a href="{% url 'index' %}#playlist">Playlist</a></li>
+        <li><a href="{% url 'index' %}#artistas">Artistas</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <button id="btnTop" aria-label="Volver arriba">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h2>Lab2 en Django</h2>
+        <p>Un homenaje a los artistas que hicieron historia en el folclor colombiano.</p>
+      </div>
+
+      <div>
+        <h3>Sitio Web</h3>
+        <ul>
+          <li><a href="{% url 'index' %}#inicio">Inicio</a></li>
+          <li><a href="{% url 'index' %}#playlist">Playlist</a></li>
+          <li><a href="{% url 'index' %}#artistas">Artistas</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Redes</h3>
+        <div class="redes" aria-label="Redes sociales">
+          <i class="fab fa-facebook-f"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-youtube"></i>
+          <i class="fab fa-spotify"></i>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <p class="copy">
+      (c) 2026 Todos los derechos reservados | Disenado por <strong>Ivan Lastre</strong>
+    </p>
+  </footer>
+
+  <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
