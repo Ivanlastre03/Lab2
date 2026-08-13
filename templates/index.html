@@ -76,7 +76,7 @@
 
         <div class="estadisticas">
           <div><h2>{{ artistas|length }}</h2><span>Artistas</span></div>
-          <div><h2>12</h2><span>Canciones</span></div>
+          <div><h2>{{ total_canciones }}</h2><span>Canciones</span></div>
           <div><h2>4</h2><span>Rutas detalle</span></div>
         </div>
       </div>
@@ -89,7 +89,7 @@
 
     <div class="playlist-grid">
       {% for artista in artistas %}
-        {% for cancion in artista.canciones|slice:":1" %}
+        {% for cancion in artista.canciones.all|slice:":1" %}
           <article class="song">
             <i class="fa-solid fa-play"></i>
             <h3>{{ cancion.titulo }}</h3>

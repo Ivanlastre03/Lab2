@@ -24,7 +24,7 @@
         <div class="estadisticas detalle-stats">
           <div><h2>{{ artista.anio_inicio }}</h2><span>Año de inicio</span></div>
           <div><h2>{{ artista.reproducciones }}M+</h2><span>Reproducciones</span></div>
-          <div><h2>{{ artista.canciones|length }}</h2><span>Canciones</span></div>
+          <div><h2>{{ artista.canciones.count }}</h2><span>Canciones</span></div>
         </div>
 
         <p><strong>Origen:</strong> {{ artista.origen }}</p>
@@ -37,7 +37,7 @@
     <h2>Canciones Representativas</h2>
 
     <div class="playlist-grid">
-      {% for cancion in artista.canciones %}
+      {% for cancion in artista.canciones.all %}
         <article class="song">
           <i class="fa-solid fa-record-vinyl"></i>
           <h3>{{ cancion.titulo }}</h3>

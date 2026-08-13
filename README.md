@@ -5,11 +5,11 @@
 
 ## Descripcion del proyecto
 
-Este proyecto es una pagina web desarrollada con Django para el Lab 2. La pagina presenta una coleccion dinamica de artistas representativos del vallenato colombiano. En la pantalla principal se muestra una introduccion del proyecto, una seccion informativa, una lista de canciones recomendadas y un listado de artistas generado desde datos enviados por la vista de Django.
+Este proyecto es una pagina web desarrollada con Django para el Lab 2. La pagina presenta una coleccion dinamica de artistas representativos del vallenato colombiano. En la pantalla principal se muestra una introduccion del proyecto, una seccion informativa, una lista de canciones recomendadas y un listado de artistas consultado desde la base de datos con el ORM de Django.
 
-Cada artista tiene informacion propia como nombre, origen, apodo, descripcion, imagen, anio de inicio, reproducciones y una lista interna de canciones. Desde el listado principal se puede entrar a una pagina de detalle individual usando una ruta dinamica. En esa vista se muestra la informacion completa del artista seleccionado y sus canciones representativas.
+Cada artista tiene informacion propia como nombre, origen, apodo, descripcion, imagen, anio de inicio y reproducciones. Las canciones se guardan en una tabla aparte y se conectan con su artista correspondiente. Desde el listado principal se puede entrar a una pagina de detalle individual usando una ruta dinamica. En esa vista se muestra la informacion completa del artista seleccionado y sus canciones representativas.
 
-El proyecto tambien queda preparado para conectarse a PostgreSQL usando variables de entorno, evitando guardar contrasenas dentro del codigo.
+El proyecto queda conectado a PostgreSQL usando variables de entorno, evitando guardar contrasenas dentro del codigo.
 
 ## Tecnologias utilizadas
 
@@ -56,6 +56,11 @@ Despues ejecuta las migraciones para crear las tablas internas de Django en Post
 py manage.py migrate
 ```
 
+Este comando tambien crea las tablas propias del proyecto:
+
+- `vallenato_artista`
+- `vallenato_cancion`
+
 Si todavia no quieres usar PostgreSQL, deja `USE_POSTGRES=False` o no crees el archivo `.env`. En ese caso Django usara SQLite como respaldo local.
 
 ## Ejecucion del proyecto
@@ -100,18 +105,18 @@ Se usan instrucciones como:
 
 ### 2. Coleccion de datos
 
-La coleccion principal esta en `vallenato/views.py` y se llama `ARTISTAS`. Contiene 4 artistas:
+La coleccion principal esta guardada en la base de datos mediante el modelo `Artista`, definido en `vallenato/models.py`. Contiene 4 artistas cargados por migracion:
 
 - Diomedes Diaz
 - Poncho Zuleta
 - Jorge Oñate
 - Silvestre Dangond
 
-Cada artista tiene campos como `nombre`, `slug`, `imagen`, `apodo`, `origen`, `anio_inicio`, `reproducciones`, `destacado`, `descripcion` y `canciones`.
+Cada artista tiene campos como `nombre`, `slug`, `imagen`, `apodo`, `origen`, `anio_inicio`, `reproducciones`, `destacado` y `descripcion`.
 
 ### 3. Datos anidados y campos numericos
 
-Cada artista tiene una lista interna llamada `canciones`. Esa lista es un dato anidado porque esta dentro de cada elemento de la coleccion principal.
+Cada artista tiene canciones relacionadas mediante el modelo `Cancion`. Esta relacion representa el dato anidado del proyecto: un artista puede tener varias canciones.
 
 Tambien se usan campos numericos como:
 
@@ -131,13 +136,13 @@ Las demas paginas reutilizan ese layout con:
 
 ### 5. Listado generado con bucle
 
-El listado de artistas se genera con un bucle en `templates/index.html`:
+El listado de artistas se consulta desde PostgreSQL en `vallenato/views.py` y se genera con un bucle en `templates/index.html`:
 
 ```django
 {% for artista in artistas %}
 ```
 
-Django recorre la coleccion `ARTISTAS` y crea una tarjeta por cada artista.
+Django recorre los registros del modelo `Artista` y crea una tarjeta por cada artista.
 
 ### 6. Rutas dinamicas de detalle
 
@@ -190,6 +195,16 @@ Django esta configurado para usar PostgreSQL cuando `USE_POSTGRES=True` en el ar
 - `POSTGRES_PORT`
 
 Si `USE_POSTGRES` no esta activo, el proyecto usa SQLite para facilitar pruebas locales.
+
+Los datos del proyecto estan modelados en:
+
+- `Artista`: guarda la informacion principal de cada cantante.
+- `Cancion`: guarda canciones y se relaciona con `Artista`.
+
+Las tablas creadas en PostgreSQL son:
+
+- `vallenato_artista`
+- `vallenato_cancion`
 
 ## Verificacion
 
