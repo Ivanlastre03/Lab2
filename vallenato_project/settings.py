@@ -2,13 +2,24 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from mongoengine import connect
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 load_dotenv(BASE_DIR / ".env")
 
+
+
 SECRET_KEY = "django-insecure-dev-key-change-before-production"
+
 DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "testserver",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -20,6 +31,7 @@ INSTALLED_APPS = [
     "vallenato",
 ]
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -30,7 +42,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "vallenato_project.urls"
+
 
 TEMPLATES = [
     {
@@ -48,35 +62,44 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = "vallenato_project.wsgi.application"
 
-USE_POSTGRES = os.getenv("USE_POSTGRES", "False").lower() == "true"
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
-if USE_POSTGRES:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("POSTGRES_DB", "lab2_django"),
-            "USER": os.getenv("POSTGRES_USER", "postgres"),
-            "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
-            "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-            "PORT": os.getenv("POSTGRES_PORT", "5432"),
-        }
-    }
+
+MONGODB_URI = os.getenv("MONGODB_URI")
+MONGODB_DB = os.getenv("MONGODB_DB", "vallenato_db")
+
+if MONGODB_URI:
+    connect(
+        db=MONGODB_DB,
+        host=MONGODB_URI,
+        alias="default",
+    )
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+    print("ADVERTENCIA: No se encontró MONGODB_URI en el archivo .env")
+
 
 LANGUAGE_CODE = "es-co"
+
 TIME_ZONE = "America/Bogota"
+
 USE_I18N = True
+
 USE_TZ = True
 
+
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
